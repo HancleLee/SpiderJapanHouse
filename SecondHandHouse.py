@@ -12,7 +12,7 @@ from Config import kDomain, kUserAgent
 import SHHouseSurrounding
 
 # test
-url_test = "https://www.athome.co.jp/mansion/6964410290/?DOWN=1&BKLISTID=001LPC&IS_TAB_VIEW=1#item-detail_tabContents"
+url_test = "https://www.athome.co.jp/mansion/1021513319/?DOWN=1&BKLISTID=001LPC&sref=list_simple"
 
 def spiderHouseDetail(url):
     result = {}
@@ -57,20 +57,19 @@ def spiderHouseDetail(url):
     if len(table_items)>=3:
         table_detail_0 = table_items[0]
         tr_details_0 = SoupHelper.filterTags(table_detail_0, "tr", {})
-        if len(tr_details_0) >= 4:
-            tr_detail_0_2 = tr_details_0[2]
-            tr_detail_a_0 = SoupHelper.filterTag(tr_detail_0_2, "a", {})
-            if type(tr_detail_a_0)==bs4.element.Tag:
-                tr_detail_a_href = tr_detail_a_0["href"]
-                if len(tr_detail_a_href) > 0:
-                    price_trend = kDomain + tr_detail_a_href  # 城市报价链接
-                    result["price_trend_url"] = price_trend
-                    chartData = getPriceTrendDetail(price_trend)
-                    result["price_trend_chart_data"] = chartData
+        tr_detail_a_0 = SoupHelper.filterTag(tr_details_0, "a", {"data-category":"価格相場"})
+        if type(tr_detail_a_0) == bs4.element.Tag:
+            tr_detail_a_href = tr_detail_a_0["href"]
+            if len(tr_detail_a_href) > 0:
+                price_trend = kDomain + tr_detail_a_href  # 城市报价链接
+                result["price_trend_url"] = price_trend
+                chartData = getPriceTrendDetail(price_trend)
+                result["price_trend_chart_data"] = chartData
+                # print("price_trend",price_trend)
 
         table_detail_1 = table_items[1]
         tr_details = SoupHelper.filterTags(table_detail_1, "tr",{})
-        if len(tr_details)>=4:
+        if len(tr_details)>=1:
             tr_detail_1 = tr_details[1]
             td_details  = SoupHelper.filterTags(tr_detail_1, "td", {})
             td_manager_price = SoupHelper.tagTextNoSpace(td_details[0]) # 管理费
@@ -80,7 +79,7 @@ def spiderHouseDetail(url):
 
         table_detail_2 = table_items[2]
         tr_details_2 = SoupHelper.filterTags(table_detail_2, "tr", {})
-        if len(tr_details_2) >= 4:
+        if len(tr_details_2) >= 3:
             tr_detail_2_0 = tr_details_2[0]
             td_details_2_0 = SoupHelper.filterTags(tr_detail_2_0, "td", {})
             td_build_name = SoupHelper.tagTextNoSpace(td_details_2_0[0])  # 建筑名
@@ -97,7 +96,7 @@ def spiderHouseDetail(url):
                 # 这个例子中使用match()无法成功匹配
                 td_note_str = SoupHelper.tagText(td_details_2[0])
                 match = pattern.search(str(td_note_str))
-                print(type(match))
+                # print(type(match))
                 if match != None:
                     orientation = str(match.group())
                     if len(orientation) > 0:
@@ -147,5 +146,5 @@ def filterTagTextNoSpace(tag, tag_name, attrs):
 def getPriceTrendDetail(url):
     return PriceTrend.spiderPriceTrend(url)
 
-# spiderHouseDetail(url=url_test)
+spiderHouseDetail(url=url_test)
 
