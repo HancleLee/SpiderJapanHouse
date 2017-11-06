@@ -9,7 +9,7 @@ import SoupHelper
 from Config import kDomain, kUserAgent
 
 # test
-url_test = "https://www.athome.co.jp//mansion/shinchiku/116280/?DOWN=1&BKLISTID=001LPC&sref=list_simple&site_cd=0"
+# url_test = "https://www.athome.co.jp//mansion/shinchiku/116280/?DOWN=1&BKLISTID=001LPC&sref=list_simple&site_cd=0"
 
 def spiderHouseDetail(url):
     session = requests.Session()
@@ -51,4 +51,4 @@ def spiderHouseDetail(url):
     # print(div_house_types)
     print(house_title, " # ", house_address, " # ", house_traffic, " # ", house_type, " # ", house_area)
 
-spiderHouseDetail(url=url_test)
+# spiderHouseDetail(url=url_test)

@@ -47,3 +47,16 @@ def tagTextNoSpace(tag):
         result = result.replace("\xa0", " ")
 
     return result
+
+# 返回tag中的文本并去除换行符和空格符
+def tagText(tag):
+    # print(type(tag))
+    # print(tag.encoding)
+    result = ""
+    if type(tag)==bs4.element.Tag: # 标签
+        result = tag.text
+
+    elif type(tag)==str:  # 文本
+        result = tag
+
+    return result

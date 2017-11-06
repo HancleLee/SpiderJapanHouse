@@ -6,10 +6,11 @@ import requests
 import SoupHelper
 from Config import kDomain, kUserAgent
 
-def getUrlsFromCity(url):
+# 返回城市列表的数组， [{'area_name':'','area_url':'' }...] area_name:地区名 area_url:地区链接,数组里的object已经转换成str之后再存储的
+def spiderCityList(url):
     if len(url)<=0:
         return ""
-
+    area = {}
     results = []
     session = requests.Session()
     session.headers = {
@@ -31,13 +32,17 @@ def getUrlsFromCity(url):
             a_area = SoupHelper.filterTag(li, "a", {})
             if a_area:
                 url = kDomain + a_area["href"]
-                results.append(url)
+                area_name = a_area.text
+                area["area_name"] = area_name
+                area["area_url"] = url
+                # print(area)
+                results.append(str(area))
     return results
 
-# urls = getUrlsFromCity("https://www.athome.co.jp/mansion/chuko/tokyo/city/")
-# print(len(urls))
-# print(urls)
-#
+# areas = spiderCityList("https://www.athome.co.jp/mansion/chuko/tokyo/city/")
+# print(len(areas))
+# print(areas)
+
 # urls_1 = getUrlsFromCity("https://www.athome.co.jp/mansion/chuko/osaka/city/")
 # print(len(urls_1))
 # print(urls_1)

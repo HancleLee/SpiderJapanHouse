@@ -46,7 +46,6 @@ def saveDic(dic, file_name, encode_type):
         return False
 
 
-
 def saveLists(lists, file_name, encode_type):
     # print(lists.__len__())
     if type(lists)==list:
